@@ -2,7 +2,12 @@
            (replacing the palceholder with your Github name):
            https://api.github.com/users/<your name>
 */
+axios.get('https://api.github.com/users/chris296')
+.then(response =>{
+  console.log(response);
+  document.querySelector('.cards').append(createComponent(response.data));
 
+})
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
    data in order to use it to build your component function 
@@ -23,6 +28,25 @@
           Using that array, iterate over it, requesting data for each user, creating a new card for each
           user, and adding that card to the DOM.
 */
+// axios.get('https://api.github.com/users/chris/followers')
+// .then(response =>{
+//   console.log(response);
+//   response.data.forEach(item =>{
+//     axios.get(`hhtps://api.github.com/users/${item.login}`)
+//     .then(response);
+//     document.querySelector('.cards').append(createComponent(response.data));
+//   })
+// })
+
+axios.get('https://api.github.com/users/chris/followers')
+.then(response =>{
+  console.log(response);
+  response.data.forEach(item => {
+    document.querySelector('.cards').append(createComponent(item))
+  })
+  
+})
+
 
 const followersArray = [];
 
@@ -45,7 +69,42 @@ const followersArray = [];
 </div>
 
 */
+function createComponent (arg) {
+  const card = document.createElement('div');
+  const image = document.createElement('img');
+  const cardInfo = document.createElement('div');
+  const name = document.createElement('h3');
+  const username = document.createElement('p');
+  const location = document.createElement('p');
+  const profile = document.createElement('p');
+  const address = document.createElement('a');
+  const followers = document.createElement('p');
+  const following = document.createElement('p');
+  const bio = document.createElement('p');
 
+  card.classList.add('card');
+  cardInfo.classList.add('card-info');
+  name.classList.add('name');
+  username.classList.add('username');
+
+  card.append(image, cardInfo,);
+  cardInfo.append(name, username, location, profile, followers, following, bio);
+  profile.appendChild(address);
+
+  image.src = arg.avatar_url;
+  name.textContent = arg.name;
+  username.textContent = arg.login;
+  location.textContent = `Location: ${arg.location}`;
+  profile.textContent = `Profile:`;
+  address.textContent = arg.html_url;
+  address.src = arg.html_url;
+  followers.textContent = arg.followers;
+  following.textContent = arg.following;
+  bio.textContent = `Bio: ${arg.bio}`;
+
+  return card;
+  
+}
 /* List of LS Instructors Github username's: 
   tetondan
   dustinmyers
